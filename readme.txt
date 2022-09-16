@@ -1,4 +1,6 @@
+------------------------
 Pydgin translator
+------------------------
 
 Goal:
 Translate Python-like code to C++
@@ -20,8 +22,8 @@ For loops - for int i, i < j, i += 1:
 What it does:
 Translates Pydgin .pgn files into .cpp files
 
-Example:
 ------------------------
+Example:
 Pydgin code
 ------------------------
 @import <iostream>
@@ -49,3 +51,32 @@ int main() {
 	cout << to_print << endl;
 	for (int i; i < 5; ++i) {
 	    cout << i << endl;}}
+
+------------------------
+pdg command in terminal:
+------------------------
+A terminal translator/compiler for pydgin. Can translate to .cpp,
+compile to .o, and link to .exe. By default sits on top of clang++,
+but can use others by -use <compiler>. Can pass arguments directly
+to compiler by -args <number of args> <arg 1> <arg 2> ... <arg n>.
+
+pydgin a.pdg b.pdg c.pdg -o main.exe
+    a.pdg b.pdg c.pdg -> a.cpp b.cpp c.cpp -> a.o b.o c.o
+    -> main.exe
+
+pydgin a.pdg b.pdg c.pdg
+    -> out.exe
+
+pydgin -translate a.pdg
+    -> a.cpp
+
+pydgin -c a.pdg -o main.o
+    a.pdg -> a.cpp -> main.o
+    -> main.o
+
+pydgin -c a.pdg
+    -> a.o
+
+pydgin -use clang++ -args 3 -pedantic -Werror -c a.pdg
+    clang++ -pedantic -Werror -c a.pdg
+    -> a.o
