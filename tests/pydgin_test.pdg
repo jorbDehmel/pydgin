@@ -1,0 +1,24 @@
+@import <iostream>
+using namespace std
+
+'''
+Test for pydgin
+translation
+'''
+
+int main():
+	cout << "Hello World!" << endl
+	# This is a comment
+	for (int i = 0, i < 5, i += 1):
+		cout << i << endl
+		if i == 4:
+			cout << "i is four" << endl
+	return 0
+
+# A comment added to test save
+
+
+
+
+
+

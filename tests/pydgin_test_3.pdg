@@ -1,0 +1,25 @@
+@import <string>
+@import <iostream>
+using namespace std
+
+struct example:
+	void sayhi():
+		cout << "Hi"
+		return
+	int give2():
+		return 2
+
+class test:
+public:
+	void poopoo()
+private:
+	void peepee():
+		return
+
+void test get poopoo ():
+	cout << "Entered Poopoo"
+	return
+
+int main():
+	cout << "Hello world!" << endl
+	return 0
