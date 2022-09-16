@@ -1,6 +1,7 @@
 import regex as re
 import sys
 import os
+import pydgin as p
 
 """
 A terminal translator/compiler for pydgin. Can translate to .cpp,
@@ -30,13 +31,22 @@ pydgin -use clang++ -args 3 -pedantic -Werror -c a.pdg
     -> a.o
 """
 
-def translate():
-    cpp_path
-    return cpp_path
+def translate(objects, destination):
+    out_objects = []
+    for object in objects:
+        comp = p.Compiler(object, destination)
+        out_objects.append(comp.compile())
+    return out_objects
+
+def compile(compiler, tags, objects, destination):
+    for object in objects:
+        command = compiler + ' -c ' + ' '.join(tags) + ' ' + object + ' -o ' + destination + '/' + re.sub(r'\.cpp', r'.o', object)
+        os.system(command)
+    return [re.sub(r'\.cpp', r'.o', item) for item in objects]
 
 if __name__ == '__main__':
-    args = sys.argv
-
+    args = sys.argv[1:]
+    
     to_cpp = True
     to_obj = True
     to_exe = True
@@ -45,55 +55,55 @@ if __name__ == '__main__':
     tags = []
     destination = '.'
     
-    pdgs = []
-    cpps = []
     objects = []
 
-    i = -1
-    while i < len(sys.argv):
-        i += 1
-        item = sys.argv[i]
-        
-        if item[-4:] == '.pdg':
-            objects.append(item)
-        
-        elif item == '-o':
+    if len(args) == 0:
+        print('-----Pydgin translator-----')
+        print('Translates Python-like code to C++.')
+        print('Aims to marry a Python-like developer experience')
+        print('with the speed, low-level functionality and wide')
+        print('array of libraries of C++.')
+        print('Turns .pdg files into .cpp, .o, or .exe files.')
+    else:
+        i = -1
+        while i + 1 < len(args):
             i += 1
-            destination = sys.argv[i]
-        
-        elif item == '-c':
-            to_cpp = True
-            to_obj = True
-            to_exe = False
-
-        elif item == '-translate':
-            to_cpp = True
-            to_obj = False
-            to_exe = False
-
-        elif item == '-use':
-            i += 1
-            compiler = sys.argv[i]
-        
-        elif item == '-args':
-            i += 1
-            num = sys.argv[i]
-            for i in num:
+            item = args[i]
+            
+            if item[-4:] == '.pdg':
+                objects.append(item)
+            
+            elif item == '-o':
                 i += 1
-                tags.append(sys.argv[i])
-    
-    if to_cpp:
-        print('Translating...')
-        translate()
-        pass
+                destination = args[i]
+            
+            elif item == '-c':
+                to_cpp = True
+                to_obj = True
+                to_exe = False
 
-    if to_obj:
-        print('Compiling...')
-        os.system(compiler + ' -c ' + ' '.join(tags) + ' ' + ' '.join(objects) + ' -o ' + destination)
+            elif item == '-translate':
+                to_cpp = True
+                to_obj = False
+                to_exe = False
 
-    if to_exe:
-        print('Linking...')
-        os.system(compiler + ' ' + ' '.join(tags) + ' ' + ' '.join(objects) + ' -o ' + destination)
-        pass
+            elif item == '-use':
+                i += 1
+                compiler = args[i]
+            
+            elif item == '-args':
+                i += 1
+                num = args[i]
+                for i in num:
+                    i += 1
+                    tags.append(args[i])
+        
+        if to_cpp:
+            objects = translate(objects, destination)
 
-    print('Finished.')
+        if to_obj:
+            objects = compile(compiler, tags, objects, destination)
+
+        if to_exe:
+            command = compiler + ' ' + ' '.join(tags) + ' ' + ' '.join(objects) + ' -o pdgmain.exe'
+            os.system(command)
