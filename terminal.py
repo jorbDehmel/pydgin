@@ -31,16 +31,17 @@ pydgin -use clang++ -args 3 -pedantic -Werror -c a.pdg
     -> a.o
 """
 
-def translate(objects, destination):
+def translate(objects):
     out_objects = []
     for object in objects:
-        comp = p.Compiler(object, destination)
+        comp = p.Compiler(object, '.')
         out_objects.append(comp.compile())
     return out_objects
 
 def compile(compiler, tags, objects, destination):
     for object in objects:
-        command = compiler + ' -c ' + ' '.join(tags) + ' ' + object + ' -o ' + destination + '/' + re.sub(r'\.cpp', r'.o', object)
+        command = compiler + ' -c ' + ' '.join(tags) + ' ' + object + ' -o ' + re.sub(r'\.cpp', r'.o', object)
+        print(command)
         os.system(command)
     return [re.sub(r'\.cpp', r'.o', item) for item in objects]
 
@@ -94,16 +95,17 @@ if __name__ == '__main__':
             elif item == '-args':
                 i += 1
                 num = args[i]
-                for i in num:
+                for a in range(int(num)):
                     i += 1
                     tags.append(args[i])
         
         if to_cpp:
-            objects = translate(objects, destination)
+            objects = translate(objects)
 
         if to_obj:
-            objects = compile(compiler, tags, objects, destination)
+            objects = compile(compiler, tags, objects, '.')
 
         if to_exe:
-            command = compiler + ' ' + ' '.join(tags) + ' ' + ' '.join(objects) + ' -o pdgmain.exe'
+            command = compiler + ' ' + ' '.join(tags) + ' ' + ' '.join(objects) + ' -o ' + re.sub(r'\.o', r'.exe', objects[-1])
+            print(command)
             os.system(command)
