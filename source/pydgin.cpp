@@ -1,12 +1,29 @@
 /*
 Script for converting pdg to cpp, this time written in cpp.
+
+Pretty much a line-for-line translation (ironically) of the .py.
 */
 
 #include <iostream>
 #include <fstream>
 #include "boost/regex.hpp"
 #include <string>
+#include <vector>
 using namespace std;
+
+vector<string> split(const string& text, const char& deliminator) {
+    vector<string> vect;
+    string temp;
+    for (int i = 0; i < text.length(); i++) {
+        if (text[i] == deliminator) {
+            vect.push_back(temp);
+            temp = "";
+            continue;
+        }
+        temp += text[i];
+    }
+    return vect;
+}
 
 int main(int argc, char **argv) {
     // Takes in input filepath, output filepath
@@ -20,10 +37,10 @@ int main(int argc, char **argv) {
     // Get text from file
     ifstream file;
     file.open(inp_filepath, ifstream::in);
-    string text, temp;
+    string text, temp_s;
     text = "";
-    while (getline(file, temp)) {
-        text += temp;
+    while (getline(file, temp_s)) {
+        text += temp_s;
     }
     file.close();
 
@@ -45,59 +62,72 @@ int main(int argc, char **argv) {
     text = boost::regex_replace(text, boost::regex("else if (?=[^\\(])"), "");
 
     // Brackets, end parenthesis, for loop semicoloning
-    /*
-    temp = re.split(r'\n', self.text)
-    temp = [i + '\n' for i in temp]
-    self.text = ''
+    vector<string> temp = split(text, '\n');
+    for (int i = 0; i < temp.size(); i++) {
+        temp[i] += '\n';
+    }
+    text = "";
 
-    # Do tab replacement
-    tab_count_prev = 0
-    for line_num, line in enumerate(temp):
-        # Get current tab count
-        if len(line) == 0:
-            continue
+    int tab_count_prev = 0;
+    int tab_count_cur;
+    string line, prefix;
+    int opens;
+    char character;
+    for (int line_num = 0; line_num < temp.size(); line_num++) {
+        line = temp[line_num];
 
-        # Fix for loop semicoloning
-        if re.search(r'(?<!\w)for ', line):
-            line = re.sub(r',', r';', line)
+        if (line.length() == 0) {
+            continue;
+        }
 
-        # Balance loop parenthesis
-        if re.search(r'(for )|(while )|(if )|(else if )', line):
-            opens = 0
-            prefix = ""
-            for i, char in enumerate(line):
-                if char == '(':
-                    opens += 1
-                if char == ')':
-                    opens -= 1
-                prefix += char
-                if i + 1 == len(line) or line[i + 1] == ':':
-                    for j in range(opens):
-                        prefix += ')'
-                    prefix += line[i + 1:]
-                    break
-            temp[line_num] = prefix
-            print('became', temp[line_num])
-        line = temp[line_num]
+        // Fix for loop semicoloning
+        if (boost::regex_search(line, boost::regex("(?<!\\w)for "))) {
+            line = boost::regex_replace(line, boost::regex(","), ";");
+        }
 
-        # Balance tabs with brackets
-        tab_count_cur = 0
-        while line[tab_count_cur] == '\t':
-            tab_count_cur += 1
+        // Balance loop parenthesis
+        if (boost::regex_search(line, boost::regex("(for )|(while )|(if )|(else if )"))) {
+            opens = 0;
+            prefix = "";
+            for (int i = 0; i < line.length(); i++) {
+                character = line[i];
+                if (character == '(') {
+                    opens++;
+                } else if (character == ')') {
+                    opens--;
+                }
+                prefix += character;
+                if (i + 1 == line.length() || line[i + 1] == ':') {
+                    for (int j = 0; j < opens; j++) {
+                        prefix += ')';
+                    }
+                    prefix += line.substr(i + 1);
+                    break;
+                }
+            }
+            temp[line_num] = prefix;
+        }
+        line = temp[line_num];
 
-        # Compare tabs and adjust brackets
-        if tab_count_cur > tab_count_prev:
-            for i in range(tab_count_prev, tab_count_cur):
-                self.text = self.text[:-1]
-                self.text += ' {\n'
-        elif tab_count_cur < tab_count_prev:
-            for i in range(tab_count_prev, tab_count_cur, -1):
-                self.text += ('\t' * (i - 1)) + '}' + '\n'
+        tab_count_cur = 0;
+        while (line[tab_count_cur] == '\t') {
+            tab_count_cur++;
+        }
 
-        # Reappend line to text
-        self.text += line
-        tab_count_prev = tab_count_cur
-    */
+        if (tab_count_cur > tab_count_prev) {
+            for (int i = tab_count_prev; i < tab_count_cur; i++) {
+                text = text.substr(0, text.size() - 2);
+                text += " {\n";
+            }
+        } else if (tab_count_cur < tab_count_prev) {
+            for (int i = tab_count_prev; i < tab_count_cur; i--) {
+                text += ('\t' * (i - 1)) + "}\n";
+            }
+        }
+
+        text += line;
+        tab_count_prev = tab_count_cur;
+    }
 
     // Misc housekeeping
     text = boost::regex_replace(text, boost::regex("(?<=\\n).*#.*\\n"), "");
@@ -111,21 +141,27 @@ int main(int argc, char **argv) {
     text = boost::regex_replace(text, boost::regex("@"), "#");
 
     // Fix classes
-    /*
-    temp = re.split(r'\n', self.text)
-    self.text = ''
-    to_semicolon = -1
-    for i, line in enumerate(temp):
-        tabs = 0
-        while tabs + 1 < len(line) and line[tabs] == '\t':
-            tabs += 1
-        if re.search(r'(struct )|(class )', line):
-            to_semicolon = tabs
-        elif to_semicolon == tabs:
-            temp[i] += ';'
-            to_semicolon = -1
-    self.text = '\n'.join(temp)
-    */
+    temp = split(text, '\n');
+    text = "";
+    int to_semicolon = -1;
+    string line;
+    int tabs;
+    for (int i = 0; i < temp.size(); i++) {
+        line = temp[i];
+        tabs = 0;
+        while (tabs + 1 < line.length() && line[tabs] == '\t') {
+            tabs++;
+        }
+        if (boost::regex_search(line, boost::regex("(struct )|(class )"))) {
+            to_semicolon = tabs;
+        } else if (to_semicolon == tabs) {
+            temp[i] += ';';
+            to_semicolon = -1;
+        }
+    }
+    for (int i = 0; i < temp.size(); i++) {
+        text += temp[i] + '\n';
+    }
 
     // Untab pub/priv/prot
     text = boost::regex_replace(text, boost::regex("\\tprivate"), "private");
