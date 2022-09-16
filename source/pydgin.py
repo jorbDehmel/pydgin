@@ -14,7 +14,8 @@ class Compiler:
             r'(?<=else);': r'',
             r'@': r'#'
         }
-        self.filename = out_dir + '/' + re.search(r'[^/\\.]+(?=\.(pdg)|(txt))', inp_path).group() + r'.cpp'
+        self.filename = out_dir + '/' + re.search(r'[^/\\.]+(?=\.(pdg)|(txt))', inp_path).group()
+        self.header = False
         with open(inp_path, 'r') as file:
             self.text = file.read()
 
@@ -96,16 +97,19 @@ class Compiler:
         return
 
     def compile(self):
+        # Determine if header
+        self.header = re.match(r'^@header\n', self.text)
+
         # Semicolons
         self.text = re.sub(r'(?<![>:])\n', r';\n', self.text)
 
         # Replace spaces with tabs
         self.text = re.sub(r'    ', r'\t', self.text)
 
-        # Tab pub/priv/restr
+        # Tab pub/priv/prot
         self.text = re.sub(r'private', r'\tprivate', self.text)
         self.text = re.sub(r'public', r'\tpublic', self.text)
-        self.text = re.sub(r'restricted', r'\trestricted', self.text)
+        self.text = re.sub(r'protected', r'\tprotected', self.text)
 
         # Insert opening parenthesis in loops
         loop_subs = {
@@ -130,7 +134,7 @@ class Compiler:
         # Untab public/private/restricted
         self.text = re.sub(r'\tprivate', r'private', self.text)
         self.text = re.sub(r'\tpublic', r'public', self.text)
-        self.text = re.sub(r'\trestricted', r'restricted', self.text)
+        self.text = re.sub(r'\tprotected', r'protected', self.text)
 
         # Trim trailing whitespace
         while self.text[-1] == ' ' or self.text[-1] == '\n':
@@ -141,7 +145,8 @@ class Compiler:
         self.text = re.sub(r' get ', r'::', self.text)
 
         # Write to output
-        with open(self.filename, 'w') as file:
+        suffix = '.h' if self.header else '.cpp'
+        with open(self.filename + suffix, 'w') as file:
             file.write(self.text)
 
         # Return filename
