@@ -3,7 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "C:\\Program Files\\boost_1_62_0"
             ],
             "defines": [
                 "_DEBUG",
@@ -13,7 +14,7 @@
             "compilerPath": "C:/Program Files/LLVM/bin/clang++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-gcc-x64",
+            "intelliSenseMode": "windows-clang-x64",
             "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],

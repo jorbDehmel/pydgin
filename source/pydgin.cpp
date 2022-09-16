@@ -4,7 +4,7 @@ Script for converting pdg to cpp, this time written in cpp.
 
 #include <iostream>
 #include <fstream>
-#include <boost/regex>
+#include "boost/regex.hpp"
 #include <string>
 using namespace std;
 
@@ -39,10 +39,10 @@ int main(int argc, char **argv) {
     text = boost::regex_replace(text, boost::regex("protected"), "\\tprotected");
 
     // Loop stuff
-    text = boost::regex_replace(text, regex("while (?=[^\\(])"), "while (");
-    text = boost::regex_replace(text, regex("for (?=[^\\(])"), "");
-    text = boost::regex_replace(text, regex("if (?=[^\\(])"), "");
-    text = boost::regex_replace(text, regex("else if (?=[^\\(])"), "");
+    text = boost::regex_replace(text, boost::regex("while (?=[^\\(])"), "while (");
+    text = boost::regex_replace(text, boost::regex("for (?=[^\\(])"), "");
+    text = boost::regex_replace(text, boost::regex("if (?=[^\\(])"), "");
+    text = boost::regex_replace(text, boost::regex("else if (?=[^\\(])"), "");
 
     // Brackets, end parenthesis, for loop semicoloning
     /*
@@ -145,7 +145,7 @@ int main(int argc, char **argv) {
     ofstream out_file;
     out_file.open(out_filepath, ios::out);
     out_file.seekp(ios::beg);
-    out_file.write(text);
+    out_file.write((char*)&text, sizeof(text));
     out_file.close();
 
     return 0;
