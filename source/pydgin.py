@@ -1,7 +1,12 @@
 import regex as re
 import os
 
-class Compiler:
+"""
+A translator for Pydgin
+Used in the terminal commmand and the GUI translator.
+"""
+
+class Translator:
     def __init__(self, inp_path, out_dir):
         self.replace = {
             r'(?<=\n).*#.*\n': r'',

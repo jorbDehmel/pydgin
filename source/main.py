@@ -4,6 +4,10 @@ import tkinter.filedialog as fd
 
 import pydgin as pg
 
+"""
+GUI for Pydgin translation
+"""
+
 class Interface:
     def get_file(self):
         self.path = fd.askopenfile().name
@@ -22,7 +26,7 @@ class Interface:
         return
 
     def translate(self):
-        self.comp = pg.Compiler(self.path, self.folder_path)
+        self.comp = pg.Translator(self.path, self.folder_path)
         filename = self.comp.compile()
         self.label.config(text='Successfully translated')
         return filename

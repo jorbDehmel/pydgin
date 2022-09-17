@@ -1,5 +1,6 @@
 build/
 venv/
-__pychache__
+__pychache__/
 .vscode/
 *.spec
+*.pyc

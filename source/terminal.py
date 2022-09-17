@@ -3,10 +3,16 @@ import sys
 import os
 import pydgin as p
 
+"""
+The terminal command source code for pydgin.
+Compiled into pdg.exe, then placed on user's
+PATH to be callable as a command.
+"""
+
 def translate(objects):
     out_objects = []
     for object in objects:
-        comp = p.Compiler(object, '.')
+        comp = p.Translator(object, '.')
         out_objects.append(comp.compile())
     return out_objects
 
