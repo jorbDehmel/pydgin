@@ -53,7 +53,7 @@ class Compiler:
                         prefix += line[i + 1:]
                         break
                 temp[line_num] = prefix
-                print('became', temp[line_num])
+                
             line = temp[line_num]
 
             # Balance tabs with brackets
@@ -98,9 +98,6 @@ class Compiler:
         self.header = ('@header' in self.text)
         if self.header:
             self.text = self.text[8:]
-            print(self.text)
-        else:
-            print('Not a header file')
 
         # Semicolons
         self.text = re.sub(r'(?<![>:])\n', r';\n', self.text)
