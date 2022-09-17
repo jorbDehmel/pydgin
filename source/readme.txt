@@ -55,6 +55,13 @@ int main() {
 ------------------------
 pdg command in terminal:
 ------------------------
+Move 'pdg.exe' (which can be found in ../exes) to a more permanent
+folder, then add it to your system PATH variable. You can then use
+the 'pdg' command from anywhere to translate Pydgin files.
+
+------------------------
+pdg.exe, terminal.py, and terminal.cpp
+------------------------
 A terminal translator/compiler for pydgin. Can translate to .cpp,
 compile to .o, and link to .exe. By default sits on top of clang++,
 but can use others by -use <compiler>. Can pass arguments directly
@@ -80,3 +87,9 @@ pydgin -c a.pdg
 pydgin -use clang++ -args 3 -pedantic -Werror -c a.pdg
     clang++ -pedantic -Werror -c a.pdg
     -> a.o
+
+------------------------
+editor.exe and main.py
+------------------------
+A basic graphical user interface for Pydgin writing and
+translation. Uses the tkinter module.
