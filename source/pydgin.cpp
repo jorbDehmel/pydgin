@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
     file.close();
 
     // Determine if header
-    bool header = boost::regex_match(text, boost::regex("^@header\n"));
+    bool header = text.substr(0, 7) == "@header";
     if (header) {
         text = text.substr(8);
     }

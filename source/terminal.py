@@ -55,7 +55,7 @@ if __name__ == '__main__':
                 to_obj = True
                 to_exe = False
 
-            elif item == '-translate':
+            elif item == '-translate' or item == '-t':
                 to_cpp = True
                 to_obj = False
                 to_exe = False
@@ -70,6 +70,9 @@ if __name__ == '__main__':
                 for a in range(int(num)):
                     i += 1
                     tags.append(args[i])
+            
+            else:
+                raise "Invalid argument"
         
         if to_cpp:
             objects = translate(objects)

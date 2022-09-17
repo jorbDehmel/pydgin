@@ -21,9 +21,6 @@ class Compiler:
 
         return
 
-    def __repr__(self):
-        return self.text
-
     def _line_fix(self):
         temp = re.split(r'\n', self.text)
         temp = [i + '\n' for i in temp]
@@ -98,9 +95,12 @@ class Compiler:
 
     def compile(self):
         # Determine if header
-        self.header = re.match(r'^@header\n', self.text)
+        self.header = ('@header' in self.text)
         if self.header:
             self.text = self.text[8:]
+            print(self.text)
+        else:
+            print('Not a header file')
 
         # Semicolons
         self.text = re.sub(r'(?<![>:])\n', r';\n', self.text)

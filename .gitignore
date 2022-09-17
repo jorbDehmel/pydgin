@@ -1,0 +1,5 @@
+build/
+venv/
+__pychache__/
+.vscode/
+*.spec
