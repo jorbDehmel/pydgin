@@ -60,7 +60,7 @@ folder, then add it to your system PATH variable. You can then use
 the 'pdg' command from anywhere to translate Pydgin files.
 
 ------------------------
-pdg.exe, terminal.py, and terminal.cpp
+pdg.exe, and terminal.py
 ------------------------
 A terminal translator/compiler for pydgin. Can translate to .cpp,
 compile to .o, and link to .exe. By default sits on top of clang++,
@@ -93,3 +93,17 @@ editor.exe and main.py
 ------------------------
 A basic graphical user interface for Pydgin writing and
 translation. Uses the tkinter module.
+
+------------------------
+pydgin/makefile
+------------------------
+This make file is used to update the exes after changing the source
+.py files. The commands "make" or "make update" can be used while
+in this folder to do so.
+
+------------------------
+pydgin/tests
+------------------------
+Various tests for ensuring the translator is working properly.
+A makefile is also included for an example of using the pdg terminal
+command.

@@ -99,6 +99,8 @@ class Compiler:
     def compile(self):
         # Determine if header
         self.header = re.match(r'^@header\n', self.text)
+        if self.header:
+            self.text = self.text[8:]
 
         # Semicolons
         self.text = re.sub(r'(?<![>:])\n', r';\n', self.text)
