@@ -1,5 +1,6 @@
 @import <string>
 @import <regex>
+@import <iostream>
 using namespace std
 
 string inp

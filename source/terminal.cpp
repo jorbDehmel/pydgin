@@ -2,6 +2,8 @@
 Script for converting pdg to cpp, this time written in cpp.
 
 Pretty much a line-for-line translation (ironically) of the .py.
+
+Note: Should work, but my boost files aren't set up right lol
 */
 
 #include <iostream>
@@ -31,12 +33,12 @@ int main(int argc, char **argv) {
         cout << "Invalid translator call.\n";
         return -1;
     }
-    string inp_filepath = argv[1];
-    string out_filepath = argv[2];
+    char* inp_filepath = argv[1];
+    char* out_filepath = argv[2];
 
     // Get text from file
     ifstream file;
-    file.open(inp_filepath, ifstream::in);
+    file.open(inp_filepath, ios::in);
     string text, temp_s;
     text = "";
     while (getline(file, temp_s)) {
@@ -121,7 +123,10 @@ int main(int argc, char **argv) {
             }
         } else if (tab_count_cur < tab_count_prev) {
             for (int i = tab_count_prev; i < tab_count_cur; i--) {
-                text += ('\t' * (i - 1)) + "}\n";
+                for (int j = 0; j < i - 1; j++) {
+                    text += '\t';
+                }
+                text += "}\n";
             }
         }
 
@@ -144,7 +149,6 @@ int main(int argc, char **argv) {
     temp = split(text, '\n');
     text = "";
     int to_semicolon = -1;
-    string line;
     int tabs;
     for (int i = 0; i < temp.size(); i++) {
         line = temp[i];
