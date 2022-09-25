@@ -1,5 +1,7 @@
 /*
 Script for converting pdg to cpp, this time written in cpp.
+Once compiles, should be callable as an exe from the python main.
+Should be marginally faster.
 
 Pretty much a line-for-line translation (ironically) of the .py.
 
@@ -8,7 +10,7 @@ Note: Should work, but my boost files aren't set up right lol
 
 #include <iostream>
 #include <fstream>
-#include "boost/regex.hpp"
+#include <boost/regex.hpp>
 #include <string>
 #include <vector>
 using namespace std;
