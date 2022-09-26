@@ -99,6 +99,20 @@ class Translator:
         return
 
     def compile(self):
+        # Try to compile using executables
+        if os.path.exists('cpp_pdg.exe'):
+            try:
+                os.system('cpp_pdg.exe ' + self.filename)
+                return
+            except Exception as e:
+                print(e)
+        elif os.path.exists('cpp_pdg_lin'):
+            try:
+                os.system('cpp_pdg_lin ' + self.filename)
+                return
+            except Exception as e:
+                print(e)
+
         # Determine if header
         self.header = ('@header' in self.text)
         if self.header:

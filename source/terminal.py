@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     if len(args) == 0:
         print('-----Pydgin translator-----')
-        print('Translates Python-like code to C++.')
+        print('Translates Python-like Pydgin code to C++.')
         print('Aims to marry a Python-like developer experience')
         print('with the speed, low-level functionality and wide')
         print('array of libraries of C++.')

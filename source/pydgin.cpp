@@ -5,7 +5,7 @@ Should be marginally faster.
 
 Pretty much a line-for-line translation (ironically) of the .py.
 
-Note: Should work, but my boost files aren't set up right lol
+clang++ -pedantic -Werror pydgin.cpp -o pydgin.exe -L C:\"Program Files"\boost_1_62_0\boost\regex\v4\regex.hpp -lboost_regex
 */
 
 #include <iostream>
