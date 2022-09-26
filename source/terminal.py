@@ -26,8 +26,6 @@ def compile(compiler, tags, objects, destination):
 if __name__ == '__main__':
     args = sys.argv[1:]
     
-    to_cpp = True
-    to_obj = True
     to_exe = True
 
     compiler = 'clang++'
@@ -42,7 +40,7 @@ if __name__ == '__main__':
         print('Aims to marry a Python-like developer experience')
         print('with the speed, low-level functionality and wide')
         print('array of libraries of C++.')
-        print('Turns .pdg files into .cpp, .o, or .exe files.')
+        print('Turns .pdg files into .cpp or .exe files.')
     else:
         i = -1
         while i + 1 < len(args):
@@ -52,18 +50,10 @@ if __name__ == '__main__':
             if item[-4:] == '.pdg':
                 objects.append(item)
             
-            elif item == '-o':
-                i += 1
-                destination = args[i]
-            
             elif item == '-c':
-                to_cpp = True
-                to_obj = True
                 to_exe = False
 
             elif item == '-translate' or item == '-t':
-                to_cpp = True
-                to_obj = False
                 to_exe = False
 
             elif item == '-use':
@@ -80,12 +70,7 @@ if __name__ == '__main__':
             else:
                 raise "Invalid argument"
         
-        if to_cpp:
-            objects = translate(objects)
-
-        if to_obj:
-            objects = compile(compiler, tags, objects, '.')
-
+        objects = translate(objects)
         if to_exe:
             command = compiler + ' ' + ' '.join(tags) + ' ' + ' '.join(objects) + ' -o ' + re.sub(r'\.o', r'.exe', objects[-1])
             print(command)

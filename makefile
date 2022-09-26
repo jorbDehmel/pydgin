@@ -19,10 +19,10 @@ exes/prerecCheck:
 	pip install pyinstaller
 	sudo apt-get install $(CC)
 	sudo apt-get install libboost-all-dev
-exes/editor$(EXECUTABLE_SUFFIX):	source/main.py source/main.py
-	pyinstaller --noconfirm --onefile --windowed --distpath "exes" -n editor$(EXECUTABLE_SUFFIX)  "source/main.py"
+exes/editor$(EXECUTABLE_SUFFIX):	source/gui.py
+	pyinstaller --noconfirm --onefile --windowed --distpath "exes" -n editor$(EXECUTABLE_SUFFIX)  "source/gui.py"
 	$(RM) *.spec
-exes/pdg$(EXECUTABLE_SUFFIX):	source/terminal.py source/main.py
+exes/pdg$(EXECUTABLE_SUFFIX):	source/terminal.py source/gui.py
 	pyinstaller --noconfirm --onefile --console --distpath "exes" -n pdg$(EXECUTABLE_SUFFIX)  "source/terminal.py"
 	$(RM) *.spec
 exes/cpp_pdg$(EXECUTABLE_SUFFIX):	source/pydgin.cpp

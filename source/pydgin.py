@@ -162,9 +162,12 @@ class Translator:
         # Fix get kw
         self.text = re.sub(r' get ', r'::', self.text)
 
+        # Fix suffix (header or cpp)
+        suffix = '.hpp' if self.header else '.cpp'
+        self.filename += suffix
+
         # Write to output
-        suffix = '.h' if self.header else '.cpp'
-        with open(self.filename + suffix, 'w') as file:
+        with open(self.filename, 'w') as file:
             file.write(self.text)
 
         # Return filename
