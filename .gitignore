@@ -1,7 +1,8 @@
-build/
-venv/
-__pychache__/
+/build/
+/venv/
+/__pychache__/
 .vscode/
 *.spec
 *.pyc
 exes/*
+/tests/

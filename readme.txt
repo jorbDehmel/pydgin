@@ -9,6 +9,8 @@ Goal:
 Translate Python-like code to C++
 Readability over line efficiency! Python style!
 
+More documentation can be found in /docs.
+
 Language:
 Uses standard Python notation generally.
 Typing - Uses C++ style compilertime rather than Python's runtime. Uses explicit typing when declaring variables, etc
