@@ -1,0 +1,15 @@
+Major language outline:
+
+Pydgin aims to translate Python-like code into functional C++ code.
+It prioritizes readability over compactness. It also aims to make
+writing C++ code easier by eliminating unnecessary parenthesis and
+removing the necessity of semicolons. It maintains full C++ typing.
+Since it is just a translated language, it maintains full compatability
+with all C++ libraries, compiler syntax and preprocessor syntax.
+
+Goals:
+
+Implement a mandated order for typing to formalize word salads like
+"long int &foo(int const& i) const;" vs "long int& const foo (const int &i);".
+This reduces legibility and increases barrier to entry, as well as
+requiring further documentation and commenting, which no-one wants.
