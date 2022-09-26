@@ -2,6 +2,9 @@
 Pydgin translator
 ------------------------
 
+SETUP:
+While in pydgin/, run "make" or "make setup" from the command line. Then add pydgin/exes/pdg to your PATH.
+
 Goal:
 Translate Python-like code to C++
 Readability over line efficiency! Python style!
@@ -98,7 +101,7 @@ translation. Uses the tkinter module.
 pydgin/makefile
 ------------------------
 This make file is used to update the exes after changing the source
-.py files. The commands "make" or "make update" can be used while
+.py files. The commands "make" or "make setup" can be used while
 in this folder to do so.
 
 ------------------------

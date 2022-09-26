@@ -106,9 +106,9 @@ class Translator:
                 return
             except Exception as e:
                 print(e)
-        elif os.path.exists('cpp_pdg_lin'):
+        elif os.path.exists('cpp_pdg'):
             try:
-                os.system('cpp_pdg_lin ' + self.filename)
+                os.system('cpp_pdg ' + self.filename)
                 return
             except Exception as e:
                 print(e)

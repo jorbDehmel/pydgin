@@ -4,3 +4,4 @@ __pychache__/
 .vscode/
 *.spec
 *.pyc
+exes/*
