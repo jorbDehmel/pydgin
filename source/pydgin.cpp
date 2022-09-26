@@ -31,6 +31,10 @@ vector<string> split(const string& text, const char& deliminator) {
 }
 
 int main(int argc, char **argv) {
+    for (int i = 0; i < argc; i++) {
+        cout << argv[i] << '\n';
+    }
+
     // Takes in input filepath, output filepath
     if (argc < 3) {
         cout << "Invalid translator call.\n";
@@ -147,7 +151,9 @@ int main(int argc, char **argv) {
     // Misc housekeeping
     text = boost::regex_replace(text, boost::regex("(?<=\\n).*#.*\\n"), "");
     text = boost::regex_replace(text, boost::regex("@import"), "#include");
-    text = boost::regex_replace(text, boost::regex("(?<!(private)|(public)):(?!=[a-zA-Z0-9:])"), "");
+    text = boost::regex_replace(text, boost::regex("(?<!private):(?!=[a-zA-Z0-9:])"), "");
+    text = boost::regex_replace(text, boost::regex("(?<!public):(?!=[a-zA-Z0-9:])"), "");
+    text = boost::regex_replace(text, boost::regex("(?<!protected):(?!=[a-zA-Z0-9:])"), "");
     text = boost::regex_replace(text, boost::regex("['\"]{3}[^'\"]*['\"]{3}"), "");
     text = boost::regex_replace(text, boost::regex("\n"), "");
     text = boost::regex_replace(text, boost::regex(" in "), " : ");

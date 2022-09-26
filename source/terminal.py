@@ -14,7 +14,6 @@ def translate(objects):
     for object in objects:
         comp = p.Translator(object, '.')
         out_objects.append(comp.compile())
-    print('Completed translation.')
     return out_objects
 
 if __name__ == '__main__':
@@ -24,7 +23,7 @@ if __name__ == '__main__':
 
     compiler = 'clang++'
     tags = []
-    destination = '.'
+    destination = './out'
     
     objects = []
 
@@ -43,9 +42,6 @@ if __name__ == '__main__':
             
             if item[-4:] == '.pdg':
                 objects.append(item)
-            
-            elif item == '-c':
-                to_exe = False
 
             elif item == '-translate' or item == '-t':
                 to_exe = False
@@ -61,11 +57,15 @@ if __name__ == '__main__':
                     i += 1
                     tags.append(args[i])
             
+            elif item == '-c':
+                i += 1
+                destination = args[i]
+
             else:
-                raise "Invalid argument"
+                raise "INVALID ARGUMENT";
         
         objects = translate(objects)
         if to_exe:
-            command = compiler + ' ' + ' '.join(tags) + ' ' + ' '.join(objects) + ' -o ' + re.sub(r'\.cpp', r'', objects[-1])
+            command = compiler + ' ' + ' '.join(tags) + ' ' + ' '.join(objects) + ' -o ' + destination
             print(command)
             os.system(command)

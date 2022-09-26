@@ -107,13 +107,9 @@ class Translator:
 
         # Try to compile using executables
         if os.path.exists('../exes/cpp_pdg.exe'):
-            print('Windows attempt...')
             os.system('../exes/cpp_pdg.exe ' + self.inp_path + ' -o ' + self.filename + ('.h' if self.header else '.cpp'))
-            print('Completed.')
         elif os.path.exists('../exes/cpp_pdg'):
-            print('Generic attempt...')
             os.system('../exes/cpp_pdg ' + self.inp_path + ' -o  ' + self.filename + ('.h' if self.header else '.cpp'))
-            print('Completed.')
         
         if os.path.exists(self.filename + ('.h' if self.header else '.cpp')):
             return self.filename + ('.h' if self.header else '.cpp')
