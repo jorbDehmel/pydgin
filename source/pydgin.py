@@ -106,10 +106,10 @@ class Translator:
             self.text = self.text[8:]
 
         # Try to compile using executables
-        if os.path.exists('../exes/cpp_pdg.exe'):
-            os.system('../exes/cpp_pdg.exe ' + self.inp_path + ' -o ' + self.filename + ('.h' if self.header else '.cpp'))
-        elif os.path.exists('../exes/cpp_pdg'):
-            os.system('../exes/cpp_pdg ' + self.inp_path + ' -o  ' + self.filename + ('.h' if self.header else '.cpp'))
+        if os.path.exists('../bin/cpp_pdg.exe'):
+            os.system('../bin/cpp_pdg.exe ' + self.inp_path + ' -o ' + self.filename + ('.h' if self.header else '.cpp'))
+        elif os.path.exists('../bin/cpp_pdg'):
+            os.system('../bin/cpp_pdg ' + self.inp_path + ' -o  ' + self.filename + ('.h' if self.header else '.cpp'))
         
         if os.path.exists(self.filename + ('.h' if self.header else '.cpp')):
             return self.filename + ('.h' if self.header else '.cpp')

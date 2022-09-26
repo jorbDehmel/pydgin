@@ -1,8 +1,9 @@
 /build/
 /venv/
-/__pychache__/
-.vscode/
+__pycache__/
+/bin/
+/tests/
+/.vscode/
 *.spec
 *.pyc
-exes/*
-/tests/
+*.log

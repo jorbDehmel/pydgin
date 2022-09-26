@@ -10,23 +10,23 @@ CC = g++
 ARGS = -pedantic -Werror
 DEPS = -lboost_regex
 
-# Update production EXEs
-setup: exes/prerecCheck exes/editor$(EXECUTABLE_SUFFIX) exes/pdg$(EXECUTABLE_SUFFIX) exes/cpp_pdg$(EXECUTABLE_SUFFIX)
-	echo Updated
+# Update executables
+setup: update bin/pdg$(EXECUTABLE_SUFFIX) bin/cpp_pdg$(EXECUTABLE_SUFFIX)
 
-exes/prerecCheck:
-	echo Checking dependancies...
+update:
 	pip install pyinstaller
 	sudo apt-get install $(CC)
 	sudo apt-get install libboost-all-dev
-exes/editor$(EXECUTABLE_SUFFIX):	source/gui.py
-	pyinstaller --noconfirm --onefile --windowed --distpath "exes" -n editor$(EXECUTABLE_SUFFIX)  "source/gui.py"
+bin/editor$(EXECUTABLE_SUFFIX):	bin source/gui.py
+	pyinstaller --noconfirm --onefile --windowed --distpath "bin" -n editor$(EXECUTABLE_SUFFIX)  "source/gui.py"
 	$(RM) *.spec
-exes/pdg$(EXECUTABLE_SUFFIX):	source/terminal.py source/gui.py
-	pyinstaller --noconfirm --onefile --console --distpath "exes" -n pdg$(EXECUTABLE_SUFFIX)  "source/terminal.py"
+bin/pdg$(EXECUTABLE_SUFFIX):	bin source/terminal.py source/gui.py
+	pyinstaller --noconfirm --onefile --console --distpath "bin" -n pdg$(EXECUTABLE_SUFFIX)  "source/terminal.py"
 	$(RM) *.spec
-exes/cpp_pdg$(EXECUTABLE_SUFFIX):	source/pydgin.cpp
-	$(CC) $(ARGS) source/pydgin.cpp -o exes/cpp_pdg$(EXECUTABLE_SUFFIX) $(DEPS)
+bin/cpp_pdg$(EXECUTABLE_SUFFIX):	bin source/pydgin.cpp
+	$(CC) $(ARGS) source/pydgin.cpp -o bin/cpp_pdg$(EXECUTABLE_SUFFIX) $(DEPS)
+bin:
+	mkdir bin
 
 pclean:
-	$(RM) exes/*$(EXECUTABLE_SUFFIX)
+	$(RM) bin/*$(EXECUTABLE_SUFFIX)
