@@ -38,6 +38,7 @@ int main(int argc, char **argv) {
     }
     char* inp_filepath = argv[1];
     char* out_filepath = argv[2];
+    cout << inp_filepath << ' ' << out_filepath << '\n';
 
     // Get text from file
     ifstream file;

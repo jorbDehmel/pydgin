@@ -19,6 +19,7 @@ class Translator:
             r'(?<=else);': r'',
             r'@': r'#'
         }
+        self.inp_path = inp_path
         self.filename = out_dir + '/' + re.search(r'[^/\\.]+(?=\.(pdg)|(txt))', inp_path).group()
         self.header = False
         with open(inp_path, 'r') as file:
@@ -99,24 +100,25 @@ class Translator:
         return
 
     def compile(self):
-        # Try to compile using executables
-        if os.path.exists('cpp_pdg.exe'):
-            try:
-                os.system('cpp_pdg.exe ' + self.filename)
-                return
-            except Exception as e:
-                print(e)
-        elif os.path.exists('cpp_pdg'):
-            try:
-                os.system('cpp_pdg ' + self.filename)
-                return
-            except Exception as e:
-                print(e)
-
         # Determine if header
         self.header = ('@header' in self.text)
         if self.header:
             self.text = self.text[8:]
+
+        # Try to compile using executables
+        if os.path.exists('../exes/cpp_pdg.exe'):
+            print('Windows attempt...')
+            os.system('../exes/cpp_pdg.exe ' + self.inp_path + ' -o ' + self.filename + ('.h' if self.header else '.cpp'))
+            print('Completed.')
+        elif os.path.exists('../exes/cpp_pdg'):
+            print('Generic attempt...')
+            os.system('../exes/cpp_pdg ' + self.inp_path + ' -o  ' + self.filename + ('.h' if self.header else '.cpp'))
+            print('Completed.')
+        
+        if os.path.exists(self.filename + ('.h' if self.header else '.cpp')):
+            return self.filename + ('.h' if self.header else '.cpp')
+        else:
+            print('FAILED PRECOMPILED TRANSLATOR CALL')
 
         # Semicolons
         self.text = re.sub(r'(?<![>:])\n', r';\n', self.text)
