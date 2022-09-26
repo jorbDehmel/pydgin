@@ -1,9 +1,0 @@
-@header
-@import <iostream>
-@import <string>
-using namespace std
-
-class Test:
-public:
-    Test(string message)
-    void go()
