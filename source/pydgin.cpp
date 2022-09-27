@@ -32,7 +32,7 @@ vector<string> split(const string& text, const char& deliminator) {
 }
 
 // Takes inp_filepath, out_dir
-int main(int argc, char **argv) {
+int main(const int argc, char **argv) {
     for (int i = 0; i < argc; i++) {
         cout << argv[i] << '\n';
     }
@@ -45,8 +45,8 @@ int main(int argc, char **argv) {
     char* inp_filepath = argv[1];
     char* out_dir = argv[2];
 
-    string out_filepath = argv[2] + '/';
-    out_filepath += boost::regex_search(inp_filepath, boost::regex("[^/\\.]+(?=\.(pdg)|(txt))"));
+    string out_filepath = out_dir + '/';
+    out_filepath += boost::regex_search(inp_filepath, boost::regex("[^/\\.]+(?=.(pdg)|(txt))"));
 
     // Get text from file
     ifstream file;
