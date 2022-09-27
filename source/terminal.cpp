@@ -23,7 +23,7 @@ vector<string> split(const string& text, const char& deliminator) {
 
 string translate(const string inp_filepath, const string out_dir) {
     string out_filepath = out_dir + '/';
-    out_filepath += boost::regex_search(inp_filepath, boost::regex("[^/\\.]+(?=\.(pdg)|(txt))"));
+    out_filepath += boost::regex_search(inp_filepath, boost::regex("[^/\\.]+(?=\\.(pdg)|(txt))"));
 
     // Get text from file
     ifstream file;
@@ -199,6 +199,7 @@ int main(const int argc, char* argv[]) {
     vector<string> tags;
     string destination = "./out";
     vector<string> objects;
+    string command;
 
     if (argc == 0) {
         cout << "Invalid translator call.\n";
@@ -206,21 +207,22 @@ int main(const int argc, char* argv[]) {
         int i = -1;
         while (i + 1 < argc) {
             i += 1;
+            command = argv[i];
             
-            if (boost::regex_match(argv[i], boost::regex(".*\.pdg"))) {
+            if (boost::regex_match(argv[i], boost::regex(".*\\.pdg"))) {
                 objects.push_back(argv[i]);
-            } else if (argv[i] == "--translate" or argv[i] == "-t") {
+            } else if (command == "--translate" || command == "-t") {
                 to_exe = false;
-            } else if (argv[i] == "--use" or argv[i] == "-u") {
+            } else if (command == "--use" || command == "-u") {
                 i++;
                 compiler = argv[i];
-            } else if (argv[i] == "--argv" or argv[i] == "-a") {
+            } else if (command == "--argv" || command == "-a") {
                 i++;
-                for (int a = 0; a < (int)argv[i]; a++) {
+                for (int a = 0; a < stoi(string(argv[i])); a++) {
                     i++;
                     tags.push_back(argv[i]);
                 }
-            } else if (argv[i] == "-o") {
+            } else if (command == "-o") {
                 i++;
                 destination = argv[i];
             } else {

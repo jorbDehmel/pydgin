@@ -6,7 +6,8 @@ else
 	RM = del
 endif
 
-CC = g++
+PRECOMP_SOURCE = .cpp
+CC = clang++
 ARGS = -pedantic -Werror
 DEPS = -lboost_regex
 
@@ -14,17 +15,9 @@ DEPS = -lboost_regex
 setup: update bin/pdg$(EXECUTABLE_SUFFIX) bin/cpp_pdg$(EXECUTABLE_SUFFIX)
 
 update:
-	pip install pyinstaller
-	sudo apt-get install $(CC)
 	sudo apt-get install libboost-all-dev
-bin/editor$(EXECUTABLE_SUFFIX):	bin source/gui.py
-	pyinstaller --noconfirm --onefile --windowed --distpath "bin" -n editor$(EXECUTABLE_SUFFIX)  "source/gui.py"
-	$(RM) *.spec
-bin/pdg$(EXECUTABLE_SUFFIX):	bin source/terminal.py source/gui.py
-	pyinstaller --noconfirm --onefile --console --distpath "bin" -n pdg$(EXECUTABLE_SUFFIX)  "source/terminal.py"
-	$(RM) *.spec
-bin/cpp_pdg$(EXECUTABLE_SUFFIX):	bin source/pydgin.cpp
-	$(CC) $(ARGS) source/pydgin.cpp -o bin/cpp_pdg$(EXECUTABLE_SUFFIX) $(DEPS)
+bin/pdg$(EXECUTABLE_SUFFIX):	bin source/terminal$(PRECOMP_SOURCE)
+	$(CC) $(ARGS) source/terminal$(PRECOMP_SOURCE) -o bin/pdg$(EXECUTABLE_SUFFIX) $(DEPS)
 bin:
 	mkdir bin
 
