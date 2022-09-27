@@ -1,5 +1,3 @@
-
-#include <iostream>
 #include <fstream>
 #include <boost/regex.hpp>
 #include <string>
@@ -202,7 +200,7 @@ int main(const int argc, char* argv[]) {
     string command;
 
     if (argc == 0) {
-        cout << "Invalid translator call.\n";
+        return -1;
     } else {
         int i = -1;
         while (i + 1 < argc) {
@@ -226,7 +224,6 @@ int main(const int argc, char* argv[]) {
                 i++;
                 destination = argv[i];
             } else {
-                cout << "INVALID ARGUMENT";
                 return -1;
             }
         }
@@ -243,7 +240,6 @@ int main(const int argc, char* argv[]) {
                 command += ' ' + object;
             }
             command += " -o " + destination;
-            cout << command << '\n';
             system(command.c_str());
         }
     }

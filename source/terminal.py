@@ -1,4 +1,3 @@
-import regex as re
 import sys
 import os
 import source.pydgin as p
