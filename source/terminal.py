@@ -1,7 +1,7 @@
 import regex as re
 import sys
 import os
-import pydgin as p
+import source.pydgin as p
 
 """
 The terminal command source code for pydgin.
@@ -9,12 +9,8 @@ Compiled into pdg.exe, then placed on user's
 PATH to be callable as a command.
 """
 
-def translate(objects):
-    out_objects = []
-    for object in objects:
-        comp = p.Translator(object, '.')
-        out_objects.append(comp.compile())
-    return out_objects
+def translate(objects: 'list[str]') -> 'list[str]':
+    return [p.translate(object, '.') for object in objects]
 
 if __name__ == '__main__':
     args = sys.argv[1:]

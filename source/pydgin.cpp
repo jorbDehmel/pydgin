@@ -16,6 +16,7 @@ clang++ -pedantic -Werror pydgin.cpp -o pydgin -lboost_regex
 #include <vector>
 using namespace std;
 
+// Splits text along deliminator, returns vector<string>
 vector<string> split(const string& text, const char& deliminator) {
     vector<string> vect;
     string temp;
@@ -30,6 +31,7 @@ vector<string> split(const string& text, const char& deliminator) {
     return vect;
 }
 
+// Takes inp_filepath, out_dir
 int main(int argc, char **argv) {
     for (int i = 0; i < argc; i++) {
         cout << argv[i] << '\n';
@@ -41,8 +43,10 @@ int main(int argc, char **argv) {
         return -1;
     }
     char* inp_filepath = argv[1];
-    char* out_filepath = argv[2];
-    cout << inp_filepath << ' ' << out_filepath << '\n';
+    char* out_dir = argv[2];
+
+    string out_filepath = argv[2] + '/';
+    out_filepath += boost::regex_search(inp_filepath, boost::regex("[^/\\.]+(?=\.(pdg)|(txt))"));
 
     // Get text from file
     ifstream file;
@@ -55,10 +59,15 @@ int main(int argc, char **argv) {
     file.close();
 
     // Determine if header
-    bool header = text.substr(0, 7) == "@header";
-    if (header) {
+    if (text.substr(0, 7) == "@header") {
         text = text.substr(8);
+        out_filepath += ".hpp";
+    } else {
+        out_filepath += ".cpp";
     }
+
+    // Temporarily turn all scope resolution to get keyword
+    text = boost::regex_replace(text, boost::regex("::"), " get ");
 
     // Semicolons
     text = boost::regex_replace(text, boost::regex("(?<![>:])\n"), ";\n");

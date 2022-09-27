@@ -8,3 +8,4 @@ __pycache__/
 *.pyc
 *.log
 /source/gui.py
+/source/legacyPydgin.py
